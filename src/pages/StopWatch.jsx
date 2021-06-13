@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Countdown from "react-countdown"
-import { ShowTime } from "./styles/StopwatchStyle"
+// import { ShowTime } from "./styles/StopwatchStyle"
 import { Button } from "react-bootstrap"
+import ShowTime from "../components/showTime/ShowTime"
 let t = null
 
 function StopWatch({ theme }) {
@@ -11,8 +12,9 @@ function StopWatch({ theme }) {
     const [milliseconds, setMilliseconds] = useState(0)
     const [rounds, setRounds] = useState([])
     const [start, setStart] = useState(false)
+    const [isContinue,setIsContinue]=useState(false)
     useEffect(() => {
-        if (start) {
+        if (isContinue) {
             t = setInterval(() => {
                 setMilliseconds(pre => pre + 10)
             }, 10)
@@ -21,7 +23,7 @@ function StopWatch({ theme }) {
         else {
             clearInterval(t)
         }
-    }, [start])
+    }, [isContinue])
     useEffect(() => {
         if (milliseconds == 1000) {
             setSeconds(pre => pre + 1)
@@ -46,15 +48,34 @@ function StopWatch({ theme }) {
         setRounds(pre => [...pre, time])
 
     }
+    function resetTime()
+    {
+        clearInterval(t)
+        setHours(0)
+        setMinutes(0)
+        setSeconds(0)
+        setMilliseconds(0)
+        setStart(pre=>!pre)
+    }
+    function runTime()
+    {
+        if(!start)
+        {
+
+            setStart(pre => !pre)
+        }
+        setIsContinue(pre=>!pre)
+    }
     return (
         <div>
             <ShowTime theme={theme}>{hours > 9 ? hours : `0${hours}`}:{minutes > 9 ? minutes : `0${minutes}`}:{seconds > 9 ? seconds : `0${seconds}`}.{milliseconds}</ShowTime>
             <div className="control-btns text-center">
-                <Button onClick={() => setStart(pre => !pre)} >{!start?"Bắt đầu":"Tạm dừng"}</Button>
-                {start?<Button className="btn-success ml-3" onClick={() => getRound()}>Từng vòng</Button>:<Button className="btn-success ml-3 disabled">Từng vòng</Button>}
+                <Button onClick={() => runTime()} >{!start?"Bắt đầu":isContinue?"Tạm dừng":"Tiếp tục"}</Button>
+                {isContinue?<Button className="btn-success ml-3" onClick={() => getRound()}>Từng vòng</Button>:<Button className="btn-success ml-3 " style={{cursor:'not-allowed'}} disabled>Từng vòng</Button>}
+                {isContinue?<Button className="btn-warning ml-3" onClick={()=>resetTime()}>Đặt lại</Button>:<Button className="btn-warning ml-3"  style={{cursor:'not-allowed'}} disabled>Đặt lại</Button>}
             </div>
             <div className="show-rounds">
-                <table className="table-dark table-striped mx-auto w-50 mt-3">
+                <table className={`${theme.background=="#fff"?'table-dark':'table-light'} table-striped mx-auto w-75 mt-3`}>
                     <thead>
                         <th>Số vòng</th>
                         <th>Thời gian vòng</th>

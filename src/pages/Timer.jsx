@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useReducer } from 'react'
 import Countdown from "react-countdown"
 import Title from '../components/title/Title'
 import { Dropdown, Form, Button, ProgressBar } from "react-bootstrap"
-import { SetUpTime,SoundControl } from "./styles/TimerStyle"
+import { SetUpTime, SoundControl } from "./styles/TimerStyle"
 import SubTitle from '../components/subTitle/SubTitle'
 import sound from "../assets/sounds/mixkit-forest-rain-loop-1225.mp3"
 import ShowTime from '../components/showTime/ShowTime'
@@ -18,7 +18,7 @@ const reducer = (state, action) => {
             return state;
     }
 }
-function Timer({theme}) {
+function Timer({ theme }) {
     let hours = []
     let minutes = []
     let seconds = []
@@ -56,6 +56,7 @@ function Timer({theme}) {
         seconds: 0
     })
     const [convertTime, setConvertTime] = useState(5000)
+    const [start, setStart] = useState(false)
     const btnControlClockRef = useRef()
     const btnStartClockRef = useRef()
     const audioRef = useRef()
@@ -63,11 +64,17 @@ function Timer({theme}) {
     const audio = new Audio(sound)
     const handleStart = () => {
         if (btnStartClockRef.current.dataset.status == "start") {
-            clockRef.current.start()
-            btnStartClockRef.current.innerText = "Dừng đếm ngược"
-            btnStartClockRef.current.className = ""
-            btnStartClockRef.current.className = "btn btn-danger"
-            btnStartClockRef.current.setAttribute('data-status', "stop")
+            if (time.hours == 0 && time.minutes == 0 && time.seconds == 0) {
+                alert("Please set up time")
+            }
+            else {
+                clockRef.current.start()
+                btnStartClockRef.current.innerText = "Dừng đếm ngược"
+                btnStartClockRef.current.className = ""
+                btnStartClockRef.current.className = "btn btn-danger"
+                btnStartClockRef.current.setAttribute('data-status', "stop")
+                setStart(pre => !pre)
+            }
         }
         else {
             clockRef.current.stop()
@@ -75,6 +82,7 @@ function Timer({theme}) {
             btnStartClockRef.current.className = ""
             btnStartClockRef.current.className = "btn btn-primary"
             btnStartClockRef.current.setAttribute('data-status', "start")
+            setStart(pre => !pre)
 
         }
     };
@@ -123,7 +131,7 @@ function Timer({theme}) {
             return <ShowTime theme={theme}>{`00`}:{`00`}:{`00`}</ShowTime>;
         } else {
             // Render a countdown
-            
+
             audio.pause()
             return <ShowTime theme={theme}>{hours > 9 ? hours : `0${hours}`}:{minutes > 9 ? minutes : `0${minutes}`}:{seconds > 9 ? seconds : `0${seconds}`}</ShowTime>;
         }
@@ -184,7 +192,10 @@ function Timer({theme}) {
             </Countdown>
             <div className="clock-control text-center">
                 <Button onClick={() => handleStart()} ref={btnStartClockRef} data-status="start">Bắt đầu đếm ngược</Button>
-                <Button onClick={() => handlePause()} className="btn-info ml-3" ref={btnControlClockRef} data-status="pause">Tạm dừng</Button>
+                {start ?
+                    <Button onClick={() => handlePause()} className="btn-info ml-3" ref={btnControlClockRef} data-status="pause">Tạm dừng</Button>
+                    : <Button className="btn-info ml-3" disabled style={{ cursor: 'not-allowed' }} >Tạm dừng</Button>
+                }
             </div>
 
 
