@@ -8,7 +8,7 @@ import Timer from './pages/Timer';
 import { darkTheme, lightTheme } from "./themes"
 import { useState, useEffect } from "react"
 import { MainContent } from "./AppStyle"
-import {FaBars} from "react-icons/fa"
+import {FaBars,FaTimes} from "react-icons/fa"
 function App(props) {
 
   const [theme, setTheme] = useState('darkTheme')
@@ -41,7 +41,7 @@ function App(props) {
             <i class="fas fa-expand"></i>
             Chế độ toàn màn hình
           </a>
-          <FaBars onClick={()=>setShowSidebar(pre=>!pre)} className="menu-icon" style={{color:useTheme.textColor,cursor:'pointer'}}></FaBars>
+          {showSidebar?<FaTimes onClick={()=>setShowSidebar(pre=>!pre)} className="menu-icon" style={{color:useTheme.textColor,cursor:'pointer'}}></FaTimes>:<FaBars onClick={()=>setShowSidebar(pre=>!pre)} className="menu-icon" style={{color:useTheme.textColor,cursor:'pointer'}}></FaBars>}
           <Switch>
             <Route path="/alarm-clock">
               <AlarmClock theme={useTheme}></AlarmClock>

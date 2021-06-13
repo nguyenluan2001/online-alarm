@@ -14,8 +14,8 @@ postition:relative;
 }
 .menu-icon{
     position:absolute;
-    top:5vh;
-    left:5vw;
+    top:1vh;
+    left:2vw;
     font-size:2rem;
     display:none;
     @media screen and (max-width:860px)
