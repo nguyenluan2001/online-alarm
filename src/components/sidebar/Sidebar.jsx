@@ -1,6 +1,6 @@
 import React from 'react'
 import { SidebarContainer, TimeType } from "./SidebarStyle"
-function Sidebar({theme,setTheme}) {
+function Sidebar({theme,setTheme,showSidebar}) {
     function toggleTheme()
     {
         if(theme=='darkTheme')
@@ -13,7 +13,7 @@ function Sidebar({theme,setTheme}) {
         }
     }
     return (
-        <SidebarContainer>
+        <SidebarContainer showSidebar={showSidebar}>
             <TimeType to="alarm-clock">
                 <i class="far fa-bell"></i>
                 <span>Alarm Clock</span>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from "axios"
 import moment from 'moment'
+import Title from "../components/title/Title"
 const timeZoneList = [
     {
         name: "New York",
@@ -27,7 +28,7 @@ const timeZoneList = [
     }
 
 ]
-function Time() {
+function Time({theme}) {
     const [timeZones, setTimeZones] = useState([])
     useEffect(() => {
         timeZoneList.forEach(item => {
@@ -52,7 +53,7 @@ function Time() {
 
     return (
         <div>
-            time
+            <Title theme={theme}>Đang cập nhật tính năng mới</Title>
         </div>
     )
 }

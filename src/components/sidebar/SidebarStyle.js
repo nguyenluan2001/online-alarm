@@ -8,9 +8,12 @@ position:fixed;
 display:flex;
 flex-direction:column;
 padding-top:1%;
-@media screen and (max-width:1024px)
+@media screen and (max-width:860px)
 {
-    width:10%;
+    transform:${({showSidebar})=>showSidebar?'translateX(vw)':"translateX(-25vw)"};
+    width:25vw;
+    transition:transform 0.5s ease-in-out;
+
 }
 `
 export const TimeType=styled(Link)`
@@ -21,11 +24,7 @@ i,span{
     display:block;
     text-align:center;
     font-size:1rem;
-    @media screen and (max-width:1024px)
-    {
-        font-size:0.8rem;
-    }
-
+   
 }
 &:hover{
     background:#525050;
