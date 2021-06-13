@@ -21,12 +21,27 @@ function App(props) {
       setUseTheme(lightTheme)
     }
   }, [theme])
+  function fullScreen(e) {
+    e.preventDefault()
+    let showTime = document.getElementById("showTime")
+
+    if (showTime.requestFullscreen) {
+      showTime.requestFullscreen()
+    }
+    console.log(showTime)
+  }
+
+
   return (
     <Router>
       <div className="App">
-       
         <Sidebar theme={theme} setTheme={setTheme}></Sidebar>
         <MainContent theme={useTheme}>
+          <a href="" style={{ color: useTheme.textColor, display: 'block', textAlign: "center" }} onClick={(e) => fullScreen(e)}>
+            <i class="fas fa-expand"></i>
+            Chế độ toàn màn hình
+          </a>
+
           <Switch>
             <Route path="/alarm-clock">
               <AlarmClock theme={useTheme}></AlarmClock>

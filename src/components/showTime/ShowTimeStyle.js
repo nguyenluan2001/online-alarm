@@ -8,4 +8,11 @@ text-align:center;
 {
     font-size:4rem;
 }
+
+display:flex;
+justify-content:center;
+align-items:center;
+&:fullscreen{
+    font-size:8rem;
+}
 `

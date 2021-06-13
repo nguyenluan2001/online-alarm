@@ -21,3 +21,18 @@ font-weight:bold;
 color:${({theme})=>theme.textColor};
 text-align:center;
 `
+export const CommonTime=styled.div`
+display:grid;
+grid-template-columns:repeat(4,1fr);
+padding:3% 20%;
+margin:0px auto;
+justify-content:center;
+span{
+    text-align:center;
+    color:${({theme})=>theme.textColor};
+    cursor:pointer;
+    &:hover{
+        color:blue;
+    }
+}
+`

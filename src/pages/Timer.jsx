@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useReducer } from 'react'
 import Countdown from "react-countdown"
 import Title from '../components/title/Title'
 import { Dropdown, Form, Button, ProgressBar } from "react-bootstrap"
-import { SetUpTime, SoundControl } from "./styles/TimerStyle"
+import { SetUpTime, SoundControl,CommonTime } from "./styles/TimerStyle"
 import SubTitle from '../components/subTitle/SubTitle'
 import sound from "../assets/sounds/mixkit-forest-rain-loop-1225.mp3"
 import ShowTime from '../components/showTime/ShowTime'
@@ -55,7 +55,7 @@ function Timer({ theme }) {
         minutes: 0,
         seconds: 0
     })
-    const [convertTime, setConvertTime] = useState(5000)
+    const [convertTime, setConvertTime] = useState(999)
     const [start, setStart] = useState(false)
     const btnControlClockRef = useRef()
     const btnStartClockRef = useRef()
@@ -64,7 +64,7 @@ function Timer({ theme }) {
     const audio = new Audio(sound)
     const handleStart = () => {
         if (btnStartClockRef.current.dataset.status == "start") {
-            if (time.hours == 0 && time.minutes == 0 && time.seconds == 0) {
+            if (convertTime==0) {
                 alert("Please set up time")
             }
             else {
@@ -74,6 +74,7 @@ function Timer({ theme }) {
                 btnStartClockRef.current.className = "btn btn-danger"
                 btnStartClockRef.current.setAttribute('data-status', "stop")
                 setStart(pre => !pre)
+                console.log(convertTime)
             }
         }
         else {
@@ -83,6 +84,7 @@ function Timer({ theme }) {
             btnStartClockRef.current.className = "btn btn-primary"
             btnStartClockRef.current.setAttribute('data-status', "start")
             setStart(pre => !pre)
+            audio.pause()
 
         }
     };
@@ -104,10 +106,54 @@ function Timer({ theme }) {
         }
 
     };
+    const commonTimes=[
+        {
+            name:'1 Phút',
+            minute:"1",
+            millisecond:'60000'
+        },
+        {
+            name:'5 Phút',
+            minute:"5",
+            millisecond:'300000'
+        },
+        {
+            name:'10 Phút',
+            minute:"10",
+            millisecond:'600000'
+        },
+        {
+            name:'15 Phút',
+            minute:"15",
+            millisecond:'900000'
+        },
+        {
+            name:'20 Phút',
+            minute:"20",
+            millisecond:'1200000'
+        },
+        {
+            name:'25 Phút',
+            minute:"25",
+            millisecond:'1500000'
+        },
+        {
+            name:'30 Phút',
+            minute:"30",
+            millisecond:'1800000'
+        },
+        {
+            name:'45 Phút',
+            minute:"45",
+            millisecond:'2700000'
+        }
+    ]
     useEffect(() => {
+        console.log(convertTime)
         setConvertTime(0)
         let tempTime = time.hours * 3600 * 1000 + time.minutes * 60 * 1000 + time.seconds * 1000
         setConvertTime(tempTime)
+        console.log(convertTime)
 
     }, [time])
     for (let i = 0; i < 24; i++) {
@@ -133,23 +179,28 @@ function Timer({ theme }) {
             // Render a countdown
 
             audio.pause()
-            return <ShowTime theme={theme}>{hours > 9 ? hours : `0${hours}`}:{minutes > 9 ? minutes : `0${minutes}`}:{seconds > 9 ? seconds : `0${seconds}`}</ShowTime>;
+            return <ShowTime  theme={theme}>{hours > 9 ? hours : `0${hours}`}:{minutes > 9 ? minutes : `0${minutes}`}:{seconds > 9 ? seconds : `0${seconds}`}</ShowTime>;
         }
     };
+   
+    function selectCommonTime(time)
+    {
+        setConvertTime(time.millisecond)
+        dispatch({ type: 'set-minutes', payload:time.minute })
+    }
     return (
         <div>
             <Title theme={theme} >Đồng hồ đếm ngược </Title>
             <SubTitle theme={theme}>Đặt hẹn giờ</SubTitle>
             <SetUpTime>
                 <Form.Control as="select" className="w-100" onChange={(e) => dispatch({ type: 'set-hours', payload: e.target.value })}>
-
                     {
                         hours.map(item => {
                             return item
                         })
                     }
                 </Form.Control>
-                <Form.Control as="select" className="w-100" onChange={(e) => dispatch({ type: 'set-minutes', payload: e.target.value })}>
+                <Form.Control as="select" className="w-100" value={time.minutes} onChange={(e) => dispatch({ type: 'set-minutes', payload: e.target.value })}>
 
                     {
                         minutes.map(item => {
@@ -166,7 +217,13 @@ function Timer({ theme }) {
                     }
                 </Form.Control>
             </SetUpTime>
-
+            <CommonTime theme={theme}>
+                {
+                    commonTimes.map(item=>{
+                        return <span onClick={()=>selectCommonTime(item)}>{item.name}</span>
+                    })
+                }
+            </CommonTime>
             <SubTitle theme={theme}>Âm thanh nào sẽ được bật khi đếm ngược kết thúc</SubTitle>
             <Form.Control as="select" className="w-25 mx-auto" onChange={(e) => chooseSound(e)}>
                 {
