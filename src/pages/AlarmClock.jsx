@@ -3,8 +3,9 @@ import Title from '../components/title/Title'
 import Countdown from "react-countdown"
 import moment from 'moment';
 import { Form, Button } from "react-bootstrap"
-import { SetUpTime, ShowTime } from "./styles/AlarmStyle"
+import { SetUpTime } from "./styles/AlarmStyle"
 import sound from "../assets/sounds/mixkit-forest-rain-loop-1225.mp3"
+import ShowTime from '../components/showTime/ShowTime';
 const reducer = (state, action) => {
     switch (action.type) {
         case 'set-hours':

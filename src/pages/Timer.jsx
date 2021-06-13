@@ -2,11 +2,10 @@ import React, { useState, useEffect, useRef, useReducer } from 'react'
 import Countdown from "react-countdown"
 import Title from '../components/title/Title'
 import { Dropdown, Form, Button, ProgressBar } from "react-bootstrap"
-import { SetUpTime, ShowTime, SoundControl } from "./styles/TimerStyle"
+import { SetUpTime,SoundControl } from "./styles/TimerStyle"
 import SubTitle from '../components/subTitle/SubTitle'
 import sound from "../assets/sounds/mixkit-forest-rain-loop-1225.mp3"
-import LoadingProgress from 'react-js-loading-progress-bar';
-
+import ShowTime from '../components/showTime/ShowTime'
 const reducer = (state, action) => {
     switch (action.type) {
         case "set-hours":
